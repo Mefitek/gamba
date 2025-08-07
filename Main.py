@@ -27,37 +27,14 @@ TODO: Docu
     cylinders - how many columns (cylinders) of slot machine
     cyl_slots = how many rows (symbols on cylinder) visible after spin
 '''
-def spin(symbols : list, cylinders : int, cyl_slots : int, shuffle : bool):
+def spin(symbols : list, cylinders : int, cyl_slots : int):
     pokie = [[-1]*cylinders]*cyl_slots
-    
-    # RANDOM
-    if shuffle:
-        for c in range(cylinders):
-            pokie[c] = random.sample(symbols, cyl_slots)
-
-    # SUCCESSIVE
-    else:
-        count = len(symbols)
-        symbols += symbols # simple overflow protection
-        for c in range(cylinders):
-            spin = random.randrange(count)
-            pokie[c] = symbols[spin:spin+cyl_slots]
-
+    for c in range(cylinders):
+            pokie[c] = random.choices(symbols, k=cyl_slots)
+    pokie = [list(row) for row in zip(*pokie)] # transpose (needed for checking the winning lines later)
     return pokie
 
 
 
-
-
-
-
-
-
-
-
-
-
-#pokie = spin_rand(SYMBOLS.copy(), 3, 3)
-#pokie = spin_static(SYMBOLS.copy(), 3, 3)
-pokie = spin(SYMBOLS.copy(), 3, 3, shuffle=False)
+pokie = spin(SYMBOLS.copy(), 3, 3)
 print_pokie(pokie)
