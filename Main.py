@@ -19,7 +19,7 @@ class Pokie:
     def __init__(self, cylinders : int, cyl_slots : int):
         self.cylinders = cylinders
         self.cyl_slots = cyl_slots
-        self.pokie = [[-1]*cylinders]*cyl_slots
+        self.pokie = [[-1]*cyl_slots]*cylinders
         return
 
     def print_pokie(self):
