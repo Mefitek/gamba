@@ -1,40 +1,45 @@
 
 import random
 
-# TODO: rework so that Pokie is a class
 
+
+# =================================
+# =======     CONSTANTS     =======
+# =================================
 SYMBOLS = [0,1,2,3,4,5,6,7,8] # symbols 🍉, 💲, 🍒, 🟣, ⭐, 🔔, 🍇, 🍊, 🧊
-USE_EMOJIS = False
+USE_EMOJIS = True
 replacements = {0:"🍉", 1:"💲", 2:"🍒", 3:"🟣", 4:"⭐", 5:"🔔", 6:"🍇", 7:"🍊", 8:"🧊"}
 replacer = replacements.get # For faster gets.
-
-'''
-TODO: Docu
-'''
-def print_pokie(pokie):
-    if not USE_EMOJIS:
-        for row in pokie:
-            print(row)
-    else:
-        for row in pokie:
-            print([replacer(n, n) for n in row])
-        
-
-'''
-TODO: Docu
-    shuffle True assumes that the symbols revolve around the cylinder in random order each spin
-    shuffle False assumes that the symbols revolve around all cylinders in the same order (0 to 8)
-    cylinders - how many columns (cylinders) of slot machine
-    cyl_slots = how many rows (symbols on cylinder) visible after spin
-'''
-def spin(symbols : list, cylinders : int, cyl_slots : int):
-    pokie = [[-1]*cylinders]*cyl_slots
-    for c in range(cylinders):
-            pokie[c] = random.choices(symbols, k=cyl_slots)
-    pokie = [list(row) for row in zip(*pokie)] # transpose (needed for checking the winning lines later)
-    return pokie
+CYLS = 3
+CYL_SLOTS = 3
 
 
+class Pokie:
 
-pokie = spin(SYMBOLS.copy(), 3, 3)
-print_pokie(pokie)
+    def __init__(self, cylinders : int, cyl_slots : int):
+        self.cylinders = cylinders
+        self.cyl_slots = cyl_slots
+        self.pokie = [[-1]*cylinders]*cyl_slots
+        return
+
+    def print_pokie(self):
+        if not USE_EMOJIS:
+            for row in self.pokie:
+                print(row)
+        else:
+            for row in self.pokie:
+                print([replacer(n, n) for n in row])
+        return
+    
+    def spin(self, symbols : list):
+        for c in range(self.cylinders):
+                self.pokie[c] = random.choices(symbols, k=self.cyl_slots)
+        self.pokie = [list(row) for row in zip(*self.pokie)] # transpose (needed for checking the winning lines later)
+        return
+
+
+
+p = Pokie(CYLS, CYL_SLOTS)
+p.spin(SYMBOLS.copy())
+p.print_pokie()
+
