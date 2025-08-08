@@ -7,14 +7,14 @@ import random
 # =======     CONSTANTS     =======
 # =================================
 SYMBOLS = [0,1,2,3,4,5,6,7,8] # symbols 🍒, 🟣, 🍇, 🍊, 💲, 🔔, 🍉, ⭐, 🧊
-WILD_SYMBOL = 8
+WILD_SYMBOL = 8 # 🧊
 USE_EMOJIS = True
 replacements = {0:"🍒", 1:"🟣", 2:"🍇", 3:"🍊", 4:"💲", 5:"🔔", 6:"🍉", 7:"⭐", 8:"🧊"}
 replacer = replacements.get # For faster gets.
 scores = {0:2, 1:2, 2:5, 3:5, 4:10, 5:10, 6:20, 7:50, 8:0}
 scores_replacer = scores.get # For faster gets.
-CYLS = 5
-CYL_SLOTS = 5
+CYLS = 3
+CYL_SLOTS = 3
 BONUS_GAME_MAX = 500
 
 
@@ -46,14 +46,9 @@ class Pokie:
         self.pokie = [list(row) for row in zip(*self.pokie)] # transpose (needed for checking the winning lines later)
         return
     
-    """
-    return:
-    line_number | symbol_index | multiplier
-    
-    """
     def count_score(self):
         lines = []
-        # ----- LINES -----
+        # ----- ROWS -----
         for row in self.pokie:
             lines.append(row)
         # ------ DIAGONALS ------

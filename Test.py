@@ -1,4 +1,4 @@
-# Test by running pytest Test.py in cmd
+# cmd → pytest Test.py
 
 import pytest
 from Main import *
