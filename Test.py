@@ -17,7 +17,7 @@ def test_pokie_1():
     p.count_score()
     assert p.last_score == 40
 
-def test_pokie_1():
+def test_pokie_2():
     """
     ['🍇', '🍇', '🍇']
     ['🔔', '🧊', '🍇']
