@@ -1,19 +1,8 @@
 
 import random
 
-# TODO: Documentation
-
  # ----- CONSTANTS -----
 SYMBOLS = [0,1,2,3,4,5,6,7,8] # symbols 🍒, 🟣, 🍇, 🍊, 💲, 🔔, 🍉, ⭐, 🧊
-SYMBOLS = [0,0,0,0,0,0,0,0,0,
-           1,1,1,1,1,1,
-           2,2,2,2,
-           3,3,3,3,
-           4,4,4,4,
-           5,5,5,
-           6,6,
-           7,7,
-           8]
 WILD_SYMBOL = 8 # 🧊
 USE_EMOJIS = True
 replacements = {0:"🍒", 1:"🟣", 2:"🍇", 3:"🍊", 4:"💲", 5:"🔔", 6:"🍉", 7:"⭐", 8:"🧊"}
@@ -134,13 +123,28 @@ def sim(spins:int, cost:int):
     print(f"\nSpins:\t{spins}\nScore:\t{score}\nRTP:\t{round(score/(spins*cost)*100,2)} %")
     return score
 
-'''
+
+
+
+
+
 p = Pokie(CYLS, CYL_SLOTS)
 p.spin(SYMBOLS.copy())
 p.print_pokie()
 p.count_score()
+
+
 '''
-spins = 10000000
+SYMBOLS = [0,0,0,0,0,0,0,0,0,
+           1,1,1,1,1,1,
+           2,2,2,2,
+           3,3,3,3,
+           4,4,4,4,
+           5,5,5,
+           6,6,
+           7,7,
+           8]
+spins = 100000
 cost = 2
 sim(spins, cost)
-
+'''
