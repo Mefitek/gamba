@@ -43,20 +43,6 @@ class Pokie:
         self.pokie = [list(row) for row in zip(*self.pokie)] # transpose (needed for checking the winning lines later)
         return
     
-    def spin2(self, symbols : list):
-        symbols += symbols # primitive overflow protection
-        for c in range(self.cylinders):
-            offset = random.randint(0,self.cyl_slots)
-            self.pokie[c] = symbols[offset:offset+self.cyl_slots]
-        self.pokie = [list(row) for row in zip(*self.pokie)] # transpose (needed for checking the winning lines later)
-        return
-
-    def spin3(self, symbols : list):
-        for c in range(self.cylinders):
-                self.pokie[c] = random.choices(symbols, k=self.cyl_slots)
-        self.pokie = [list(row) for row in zip(*self.pokie)] # transpose (needed for checking the winning lines later)
-        return
-    
     def count_score(self):
         lines = []
         # ----- ROWS -----
