@@ -62,7 +62,9 @@ class Pokie:
         for line in lines:
             score = 0
             symbol_count = len(set(line)) # convert row to set, then get length
-            if symbol_count == 1:
+            if symbol_count > 2:
+                pass
+            elif symbol_count == 1:
                 if WILD_SYMBOL in line: # BONUS GAME
                     score = random.randint(BONUS_GAME_MIN, BONUS_GAME_MAX)
                     #print(f"{emoji(line)}\tBONUS GAME score: {score}")
@@ -124,7 +126,7 @@ def sim(spins:int, cost:int):
     for game in range(spins):
         #p.spin(SYMBOLS.copy())
         p.spin(SYMBOLS.copy())
-        p.count_score1()
+        p.count_score()
         score += p.last_score
     print(f"\nSpins:\t{spins}\nScore:\t{score}\nRTP:\t{round(score/(spins*cost)*100,2)} %")
     return score
