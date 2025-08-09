@@ -50,40 +50,6 @@ class Pokie:
         for row in self.pokie:
             lines.append(row)
         # ------ DIAGONALS ------
-        #if self.cylinders == self.cyl_slots: # otherwise there are no diagonals
-            diag1 = [self.pokie[i][i] for i in range(self.cylinders)]
-            diag2 = [self.pokie[self.cylinders-1-i][i] for i in range(self.cylinders)]
-            #d1, d2 = get_diagonals(self.pokie, self.cylinders)
-            lines.append(diag1)
-            lines.append(diag2)
-
-        # ------ COUNT SCORE  ------
-        total_score = 0
-        for line in lines:
-            score = 0
-            symbol_count = len(set(line)) # convert row to set, then get length
-            if symbol_count == 1:
-                if WILD_SYMBOL in line: # BONUS GAME
-                    score = random.randint(BONUS_GAME_MIN, BONUS_GAME_MAX)
-                    #print(f"{emoji(line)}\tBONUS GAME score: {score}")
-                else: # COUNT SCORE
-                    score = [scores_replacer(n, n) for n in line][0]
-                    #print(f"{emoji(line)}\tscore: {score}")
-            elif (symbol_count == 2) and (WILD_SYMBOL in line) : # WILD SYMBOL MULTIPLIER
-                mult = pow(2, line.count(WILD_SYMBOL))
-                score = mult*max([scores_replacer(n, n) for n in line])
-                #print(f"{emoji(line)}\tscore: {score}")
-            total_score += score
-        #print(f"Total score = {total_score}\n")
-        self.last_score = total_score
-
-    def count_score2(self):
-        lines = []
-        # ----- ROWS -----
-        for row in self.pokie:
-            lines.append(row)
-        # ------ DIAGONALS ------
-        # TODO: Opti
         if self.cylinders == self.cyl_slots: # otherwise there are no diagonals
             diag1 = [self.pokie[i][i] for i in range(self.cylinders)]
             diag2 = [self.pokie[self.cylinders-1-i][i] for i in range(self.cylinders)]
@@ -112,6 +78,39 @@ class Pokie:
         self.last_score = total_score
 
 
+    def count_score2(self):
+        lines = []
+        # ----- ROWS -----
+        for row in self.pokie:
+            lines.append(row)
+        # ------ DIAGONALS ------
+        if self.cylinders == self.cyl_slots: # otherwise there are no diagonals
+            diag1 = [self.pokie[i][i] for i in range(self.cylinders)]
+            diag2 = [self.pokie[self.cylinders-1-i][i] for i in range(self.cylinders)]
+            #d1, d2 = get_diagonals(self.pokie, self.cylinders)
+            lines.append(diag1)
+            lines.append(diag2)
+
+        # ------ COUNT SCORE  ------
+        total_score = 0
+        for line in lines:
+            score = 0
+            wilds = line.count(WILD_SYMBOL)
+            if (line[0]!=line[1] or line[1]!=line[2]) and wilds==0:
+                pass
+            elif line[0]==line[1] and line[1]==line[2]: # Všechny 3 stejné
+                if line[0]==WILD_SYMBOL:
+                    score = random.randint(BONUS_GAME_MIN, BONUS_GAME_MAX) # BONUS GAME
+                else:
+                    score = [scores_replacer(n, n) for n in line][0]  # Klasické skóre
+            elif line[0]==line[1] or line[0]==line[2] or line[1]==line[2]:
+                score = max([scores_replacer(n, n) for n in line]) # [1,1,W] → [5,5,0] → 5
+                score = score*2*wilds
+            total_score += score
+        #print(f"Total score = {total_score}\n")
+        self.last_score = total_score
+
+
 def emoji(row):
     return [replacer(n, n) for n in row]
 
@@ -125,7 +124,7 @@ def sim(spins:int, cost:int):
     for game in range(spins):
         #p.spin(SYMBOLS.copy())
         p.spin(SYMBOLS.copy())
-        p.count_score()
+        p.count_score1()
         score += p.last_score
     print(f"\nSpins:\t{spins}\nScore:\t{score}\nRTP:\t{round(score/(spins*cost)*100,2)} %")
     return score
